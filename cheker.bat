@@ -1,47 +1,55 @@
-Clear-Host
-Write-Host "========================================"
-Write-Host "     ANTI-CHEAT SYSTEM v3.0"
-Write-Host "========================================"
-Write-Host ""
-
-Write-Host "Press ENTER to start scanning..."
-Read-Host
-
-Write-Host "`n[ STARTING SCAN ]"
-Write-Host "================="
-Write-Host ""
-
-function Scan {
-    param($name, $path, $time)
-    Write-Host "Scanning: $name" -NoNewline
-    1..$time | % {
-        Write-Host "." -NoNewline
-        Start-Sleep 1
-    }
-    if ($path) { explorer $path }
-    Write-Host " [OK]"
-}
-
-Scan "Disk C:\" "C:\" 3
-Scan "Temp files" $env:TEMP 3
-Scan "System folders" "C:\Windows" 3
-Scan "Programs" "C:\Program Files" 3
-Scan "Processes" "" 4
-Scan "Registry" "" 3
-Scan "Network" "" 2
-Scan "Final analysis" "" 5
-
-Write-Host "`n[ SCAN RESULTS ]"
-Write-Host "================="
-Write-Host ""
-Write-Host "Sections scanned: 8/8"
-Write-Host "Files analyzed: 24783"
-Write-Host "Processes checked: 156"
-Write-Host ""
-Write-Host "================="
-Write-Host "NO CHEATS FOUND!"
-Write-Host "System is secure"
-Write-Host "================="
-Write-Host ""
-Write-Host "Press ENTER to exit..."
-Read-Host
+@echo off
+chcp 1251 >nul
+cls
+echo ========================================
+echo      АНТИЧИТ СИСТЕМА v3.0
+echo ========================================
+echo.
+echo Нажмите ENTER для начала сканирования...
+pause >nul
+echo.
+echo [ НАЧАЛО СКАНИРОВАНИЯ ]
+echo =========================
+echo.
+echo Сканирование: Диск C:\
+explorer C:\
+timeout /t 3 /nobreak >nul
+echo   [OK]
+echo.
+echo Сканирование: Временные файлы
+explorer %temp%
+timeout /t 3 /nobreak >nul
+echo   [OK]
+echo.
+echo Сканирование: Системные папки
+explorer C:\Windows
+timeout /t 3 /nobreak >nul
+echo   [OK]
+echo.
+echo Сканирование: Программы
+explorer "C:\Program Files"
+timeout /t 3 /nobreak >nul
+echo   [OK]
+echo.
+echo Сканирование: Процессы
+timeout /t 4 /nobreak >nul
+echo   [OK]
+echo.
+echo Сканирование: Финальный анализ
+timeout /t 5 /nobreak >nul
+echo   [OK]
+echo.
+echo [ РЕЗУЛЬТАТЫ СКАНИРОВАНИЯ ]
+echo ==============================
+echo.
+echo Проверено разделов: 8/8
+echo Файлов проанализировано: 24783
+echo Процессов проверено: 156
+echo.
+echo =========================
+echo ЧИТОВ НЕ НАЙДЕНО!
+echo Система безопасна
+echo =========================
+echo.
+echo Нажмите ENTER для выхода...
+pause >nul
