@@ -1,64 +1,47 @@
-# Очистка экрана и настройка кодировки
-$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
-
-# Заголовок
 Clear-Host
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "     АНТИЧИТ СИСТЕМА v3.0" -ForegroundColor White
-Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "========================================"
+Write-Host "     ANTI-CHEAT SYSTEM v3.0"
+Write-Host "========================================"
 Write-Host ""
 
-# Кнопка "Начать сканирование"
-Write-Host "Нажмите ENTER для начала сканирования..." -ForegroundColor Yellow
-$null = Read-Host
+Write-Host "Press ENTER to start scanning..."
+Read-Host
 
-# Начало сканирования
-Write-Host "`n[ НАЧАЛО СКАНИРОВАНИЯ ]" -ForegroundColor Green
-Write-Host "=========================" -ForegroundColor Green
+Write-Host "`n[ STARTING SCAN ]"
+Write-Host "================="
 Write-Host ""
 
-# Функция для проверки с анимацией
-function Start-Check {
-    param($name, $path, $seconds)
-    
-    Write-Host "Сканирование: $name" -ForegroundColor Yellow -NoNewline
-    # Анимация точек
-    for ($i = 0; $i -lt $seconds; $i++) {
-        Write-Host "." -NoNewline -ForegroundColor Cyan
+function Scan {
+    param($name, $path, $time)
+    Write-Host "Scanning: $name" -NoNewline
+    1..$time | % {
+        Write-Host "." -NoNewline
         Start-Sleep 1
     }
-    # Открываем папку если путь указан
-    if ($path) {
-        explorer $path
-    }
-    Write-Host " [OK]" -ForegroundColor Green
+    if ($path) { explorer $path }
+    Write-Host " [OK]"
 }
 
-# Проверки
-Start-Check "Диск C:\" "C:\" 3
-Start-Check "Временные файлы" "$env:TEMP" 3
-Start-Check "Системные папки" "C:\Windows" 3
-Start-Check "Программы" "C:\Program Files" 3
-Start-Check "Процессы Windows" "" 4
-Start-Check "Реестр системы" "" 3
-Start-Check "Сетевые подключения" "" 2
-Start-Check "Финальный анализ" "" 5
+Scan "Disk C:\" "C:\" 3
+Scan "Temp files" $env:TEMP 3
+Scan "System folders" "C:\Windows" 3
+Scan "Programs" "C:\Program Files" 3
+Scan "Processes" "" 4
+Scan "Registry" "" 3
+Scan "Network" "" 2
+Scan "Final analysis" "" 5
 
-# Результат
-Write-Host "`n[ РЕЗУЛЬТАТЫ СКАНИРОВАНИЯ ]" -ForegroundColor Cyan
-Write-Host "==============================" -ForegroundColor Cyan
+Write-Host "`n[ SCAN RESULTS ]"
+Write-Host "================="
 Write-Host ""
-Write-Host "✓ Проверено разделов: 8/8" -ForegroundColor Green
-Write-Host "✓ Файлов проанализировано: 24783" -ForegroundColor Green
-Write-Host "✓ Процессов проверено: 156" -ForegroundColor Green
-Write-Host "✓ Сетевых подключений: 24" -ForegroundColor Green
+Write-Host "Sections scanned: 8/8"
+Write-Host "Files analyzed: 24783"
+Write-Host "Processes checked: 156"
 Write-Host ""
-Write-Host "======================================" -ForegroundColor Green
-Write-Host "  ЧИТОВ НЕ НАЙДЕНО!" -ForegroundColor White -BackgroundColor Green
-Write-Host "  Система полностью безопасна" -ForegroundColor White -BackgroundColor Green
-Write-Host "======================================" -ForegroundColor Green
+Write-Host "================="
+Write-Host "NO CHEATS FOUND!"
+Write-Host "System is secure"
+Write-Host "================="
 Write-Host ""
-Write-Host "Рекомендация: Продолжайте регулярные проверки" -ForegroundColor Yellow
-Write-Host ""
-Write-Host "Нажмите ENTER для выхода..." -ForegroundColor Gray
-$null = Read-Host
+Write-Host "Press ENTER to exit..."
+Read-Host
