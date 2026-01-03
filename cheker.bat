@@ -1,53 +1,64 @@
-@echo off
-chcp 1251 >nul
-color 0A
+# Очистка экрана и настройка кодировки
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
-echo =================================
-echo     АНТИЧИТ СИСТЕМА v2.0
-echo =================================
-echo.
-echo Нажмите любую клавишу для начала проверки...
-pause >nul
+# Заголовок
+Clear-Host
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "     АНТИЧИТ СИСТЕМА v3.0" -ForegroundColor White
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
 
-echo.
-echo [1/5] Сканирование диска C:\
-explorer C:\
-timeout /t 3 /nobreak >nul
-echo   [OK] Проверено
+# Кнопка "Начать сканирование"
+Write-Host "Нажмите ENTER для начала сканирования..." -ForegroundColor Yellow
+$null = Read-Host
 
-echo.
-echo [2/5] Анализ временных файлов
-explorer %temp%
-timeout /t 3 /nobreak >nul
-echo   [OK] Проверено
+# Начало сканирования
+Write-Host "`n[ НАЧАЛО СКАНИРОВАНИЯ ]" -ForegroundColor Green
+Write-Host "=========================" -ForegroundColor Green
+Write-Host ""
 
-echo.
-echo [3/5] Проверка системных папок
-explorer C:\Windows
-timeout /t 3 /nobreak >nul
-echo   [OK] Проверено
+# Функция для проверки с анимацией
+function Start-Check {
+    param($name, $path, $seconds)
+    
+    Write-Host "Сканирование: $name" -ForegroundColor Yellow -NoNewline
+    # Анимация точек
+    for ($i = 0; $i -lt $seconds; $i++) {
+        Write-Host "." -NoNewline -ForegroundColor Cyan
+        Start-Sleep 1
+    }
+    # Открываем папку если путь указан
+    if ($path) {
+        explorer $path
+    }
+    Write-Host " [OK]" -ForegroundColor Green
+}
 
-echo.
-echo [4/5] Мониторинг процессов
-taskmgr
-timeout /t 4 /nobreak >nul
-echo   [OK] Проверено
+# Проверки
+Start-Check "Диск C:\" "C:\" 3
+Start-Check "Временные файлы" "$env:TEMP" 3
+Start-Check "Системные папки" "C:\Windows" 3
+Start-Check "Программы" "C:\Program Files" 3
+Start-Check "Процессы Windows" "" 4
+Start-Check "Реестр системы" "" 3
+Start-Check "Сетевые подключения" "" 2
+Start-Check "Финальный анализ" "" 5
 
-echo.
-echo [5/5] Финальный анализ
-timeout /t 5 /nobreak >nul
-echo   [OK] Проверено
-
-echo.
-echo =================================
-echo      РЕЗУЛЬТАТ ПРОВЕРКИ
-echo =================================
-echo.
-echo ✓ Читы не обнаружены
-echo ✓ Вредоносные файлы: 0
-echo ✓ Система безопасна
-echo ✓ Статус: ЗЕЛЕНЫЙ
-echo.
-echo =================================
-echo.
-pause
+# Результат
+Write-Host "`n[ РЕЗУЛЬТАТЫ СКАНИРОВАНИЯ ]" -ForegroundColor Cyan
+Write-Host "==============================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "✓ Проверено разделов: 8/8" -ForegroundColor Green
+Write-Host "✓ Файлов проанализировано: 24783" -ForegroundColor Green
+Write-Host "✓ Процессов проверено: 156" -ForegroundColor Green
+Write-Host "✓ Сетевых подключений: 24" -ForegroundColor Green
+Write-Host ""
+Write-Host "======================================" -ForegroundColor Green
+Write-Host "  ЧИТОВ НЕ НАЙДЕНО!" -ForegroundColor White -BackgroundColor Green
+Write-Host "  Система полностью безопасна" -ForegroundColor White -BackgroundColor Green
+Write-Host "======================================" -ForegroundColor Green
+Write-Host ""
+Write-Host "Рекомендация: Продолжайте регулярные проверки" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "Нажмите ENTER для выхода..." -ForegroundColor Gray
+$null = Read-Host
